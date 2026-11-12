@@ -1,4 +1,4 @@
-# Sample output: ai-text-critic-en
+# Sample output: AI Text Critic
 
 A fictional resume summary, two bullets and a cover-letter opening, checked by the skill and
 rewritten. The scores come from the skill's checker script, run on both versions.
