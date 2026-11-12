@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contract Review Sample</title>
+<style>
+  :root{
+    --paper:#F5F4F0;
+    --paper-raised:#FFFFFF;
+    --ink:#1E2233;
+    --ink-soft:#5B6072;
+    --line:#DEDBD3;
+    --accent:#2C3E82;
+    --accent-soft:#E7E9F5;
+    --risk-high:#B3261E;
+    --risk-high-soft:#F7E3E1;
+    --risk-mid:#8A5A00;
+    --risk-mid-soft:#F3E7D0;
+    --risk-low:#1E7B4D;
+    --risk-low-soft:#DFF0E6;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#15171F;
+      --paper-raised:#1D202C;
+      --ink:#EDEBE4;
+      --ink-soft:#A7ABBD;
+      --line:#333747;
+      --accent:#8C9EF0;
+      --accent-soft:#252A45;
+      --risk-high:#FF7A6B;
+      --risk-high-soft:#3A2226;
+      --risk-mid:#E5B24E;
+      --risk-mid-soft:#3A3020;
+      --risk-low:#5FCB93;
+      --risk-low-soft:#1E3129;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#15171F;
+    --paper-raised:#1D202C;
+    --ink:#EDEBE4;
+    --ink-soft:#A7ABBD;
+    --line:#333747;
+    --accent:#8C9EF0;
+    --accent-soft:#252A45;
+    --risk-high:#FF7A6B;
+    --risk-high-soft:#3A2226;
+    --risk-mid:#E5B24E;
+    --risk-mid-soft:#3A3020;
+    --risk-low:#5FCB93;
+    --risk-low-soft:#1E3129;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    padding:0 16px 64px;
+  }
+  .wrap{max-width:760px;margin:0 auto;}
+  h1,h2,h3{
+    font-family:"Iowan Old Style","Palatino Linotype",Georgia,ui-serif,serif;
+    font-weight:600;
+    text-wrap:balance;
+    color:var(--ink);
+  }
+  .clause{
+    font-family:ui-monospace,"SF Mono","Cascadia Code",Menlo,monospace;
+    font-size:0.85em;
+    background:var(--accent-soft);
+    color:var(--accent);
+    padding:0.1em 0.5em;
+    border-radius:5px;
+    white-space:nowrap;
+  }
+  /* disclaimer: the first thing visible, no scrolling */
+  .disclaimer{
+    margin-top:24px;
+    padding:16px 20px;
+    background:var(--risk-mid-soft);
+    border:1px solid var(--risk-mid);
+    border-radius:12px;
+    font-size:0.95em;
+    color:var(--ink);
+  }
+  .disclaimer b{color:var(--risk-mid);}
+  header.doc-head{
+    padding-top:28px;
+  }
+  header.doc-head .eyebrow{
+    font-size:0.8em;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  header.doc-head h1{font-size:1.7em;margin:.2em 0 .1em;}
+  header.doc-head .meta{color:var(--ink-soft);font-size:0.9em;}
+
+  /* summary on top: conclusion before details */
+  .verdict{
+    margin-top:20px;
+    padding:20px;
+    border-radius:14px;
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
+  }
+  .verdict .badge{
+    flex:0 0 auto;
+    font-family:ui-monospace,monospace;
+    font-weight:700;
+    font-size:0.78em;
+    letter-spacing:.04em;
+    padding:6px 12px;
+    border-radius:999px;
+    text-transform:uppercase;
+    white-space:nowrap;
+  }
+  .badge.high{background:var(--risk-high-soft);color:var(--risk-high);}
+  .badge.mid{background:var(--risk-mid-soft);color:var(--risk-mid);}
+  .badge.low{background:var(--risk-low-soft);color:var(--risk-low);}
+  .verdict p{margin:0;}
+
+  section.block{margin-top:40px;}
+  section.block > h2{
+    font-size:1.25em;
+    padding-bottom:8px;
+    border-bottom:2px solid var(--line);
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+  }
+  section.block > h2 .count{
+    font-family:ui-monospace,monospace;
+    font-size:0.6em;
+    color:var(--ink-soft);
+    font-weight:400;
+  }
+
+  .card{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-left:5px solid var(--line);
+    border-radius:10px;
+    padding:16px 18px;
+    margin-top:14px;
+  }
+  .card.high{border-left-color:var(--risk-high);}
+  .card.mid{border-left-color:var(--risk-mid);}
+  .card.low{border-left-color:var(--risk-low);}
+  .card .card-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:8px;
+  }
+  .card h3{font-size:1.02em;margin:0;font-family:inherit;font-weight:600;}
+  .tag{
+    font-size:0.72em;
+    font-weight:700;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    padding:3px 9px;
+    border-radius:999px;
+  }
+  .tag.high{background:var(--risk-high-soft);color:var(--risk-high);}
+  .tag.mid{background:var(--risk-mid-soft);color:var(--risk-mid);}
+  .tag.low{background:var(--risk-low-soft);color:var(--risk-low);}
+  .quote{
+    margin:10px 0;
+    padding:8px 12px;
+    background:var(--paper);
+    border-left:3px solid var(--line);
+    font-size:0.92em;
+    color:var(--ink-soft);
+    font-style:italic;
+  }
+  .fix{
+    margin-top:10px;
+    padding:10px 12px;
+    background:var(--accent-soft);
+    border-radius:8px;
+    font-size:0.92em;
+  }
+  .fix b{color:var(--accent);}
+
+  table.check{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:14px;
+    font-size:0.92em;
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  table.check th,table.check td{
+    padding:10px 12px;
+    text-align:left;
+    border-bottom:1px solid var(--line);
+  }
+  table.check th{
+    background:var(--paper);
+    color:var(--ink-soft);
+    font-weight:600;
+    font-size:0.85em;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+  }
+  table.check tr:last-child td{border-bottom:none;}
+  .status-ok{color:var(--risk-low);font-weight:600;}
+  .status-bad{color:var(--risk-high);font-weight:600;}
+
+  .toc{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:18px;
+  }
+  .toc a{
+    font-size:0.85em;
+    padding:6px 12px;
+    border-radius:999px;
+    background:var(--accent-soft);
+    color:var(--accent);
+    text-decoration:none;
+  }
+
+  footer{
+    margin-top:56px;
+    padding-top:20px;
+    border-top:1px solid var(--line);
+    color:var(--ink-soft);
+    font-size:0.88em;
+  }
+  footer .bounds{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+    margin:14px 0;
+  }
+  @media (max-width:560px){ footer .bounds{grid-template-columns:1fr;} }
+  footer .bounds div{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:10px 12px;
+    font-size:0.95em;
+  }
+
+  .print-btn{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    background:var(--accent);
+    color:var(--paper-raised);
+    border:none;
+    border-radius:999px;
+    padding:12px 18px;
+    font-size:0.9em;
+    font-weight:600;
+    cursor:pointer;
+    box-shadow:0 4px 14px rgba(0,0,0,.25);
+  }
+  @media print{
+    .print-btn,.toc{display:none;}
+    body{background:#fff;}
+    .card,table.check,.verdict{box-shadow:none;border-color:#bbb;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="disclaimer">
+    <b>This isn't legal advice.</b> I help you understand and organize this document,
+    but I'm not a licensed attorney and no attorney-client relationship is created.
+    Before any decision that affects your money or obligations, check these points
+    with a lawyer licensed in New York.
+  </div>
+
+  <header class="doc-head">
+    <div class="eyebrow">Sample output · ai-lawyer-ny skill · fictional contract</div>
+    <h1>Freelance Services Agreement No. 12/SMM (sample)</h1>
+    <div class="meta">Reviewed September 23, 2026 · uploaded file: services-agreement-sample.docx</div>
+  </header>
+
+  <div class="verdict">
+    <span class="badge mid">Medium risk</span>
+    <p>
+      A workable but one-sided agreement for freelance social media work: the late
+      penalty and the right to terminate favor only the client, and there is no clear
+      payment date. Worth discussing 3 points before signing; all three are about
+      negotiating position, and one may also conflict with NYC freelance rules.
+    </p>
+  </div>
+
+  <section class="block">
+    <h2>Risks <span class="count">3</span></h2>
+
+    <div class="card high">
+      <div class="card-top">
+        <h3>Uncapped penalty for the contractor only</h3>
+        <span class="tag high">high</span>
+      </div>
+      <p><span class="clause">§5.3</span>: the contractor pays 1% of the total contract
+      price for every day of delay, with no upper limit. Nothing applies if the client
+      pays late. Risk for: the contractor.</p>
+      <div class="quote">"For each day of delay, Contractor shall pay Client liquidated
+      damages equal to 1% of the total Fees under this Agreement."</div>
+      <div class="fix"><b>Why it's a risk:</b> after about three months of delay the penalty
+      equals the whole fee. "Liquidated damages" (a fixed amount agreed in advance instead of
+      proving actual losses) that look like a punishment may not be enforced in New York, but
+      getting a court to say so takes time and money; it isn't automatic protection.</div>
+    </div>
+
+    <div class="card mid">
+      <div class="card-top">
+        <h3>No payment date</h3>
+        <span class="tag mid">medium</span>
+        <span class="tag high">⚖️ may conflict with NY law</span>
+      </div>
+      <p><span class="clause">§4.1</span> says the client pays "upon satisfactory completion"
+      but sets no date and doesn't say who decides what "satisfactory" means. Risk for: the
+      contractor.</p>
+      <div class="quote">"Client shall pay the Fees upon satisfactory completion of the Services."</div>
+      <div class="fix"><b>Why it matters:</b> NYC and NYS freelance laws require a written
+      contract with a payment date for work of $800 or more; if no date is set, payment is
+      generally due within 30 days of completion. A question for a lawyer: does this clause
+      meet that requirement?</div>
+    </div>
+
+    <div class="card mid">
+      <div class="card-top">
+        <h3>Only the client can terminate freely</h3>
+        <span class="tag mid">medium</span>
+      </div>
+      <p><span class="clause">§9.2</span>: the client may terminate at any time without
+      a reason; the contractor only after 30 days' written notice and only for a "material
+      breach" (a serious violation) by the client. Risk for: the contractor.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Errors and inconsistencies <span class="count">1</span></h2>
+    <div class="card mid">
+      <div class="card-top">
+        <h3>Reference to a missing exhibit</h3>
+        <span class="tag mid">check</span>
+      </div>
+      <p><span class="clause">§3.2</span> refers to "the acceptance procedure set forth in
+      Exhibit B", but the package only includes Exhibit A (rate sheet). There is no Exhibit B,
+      so the acceptance procedure isn't described anywhere.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>How to make it better <span class="count">3</span></h2>
+    <div class="card">
+      <h3>Cap the contractor's penalty</h3>
+      <div class="fix">In <span class="clause">§5.3</span>, after "1% of the total Fees
+      under this Agreement", add: <b>", provided that the aggregate amount shall not exceed
+      10% of the total Fees"</b>.</div>
+    </div>
+    <div class="card">
+      <h3>Set a payment date</h3>
+      <div class="fix">Replace <span class="clause">§4.1</span> with: <b>"Client shall pay
+      each invoice within 30 days of receipt. Services are deemed accepted unless Client
+      provides written objections within 5 business days of delivery."</b></div>
+    </div>
+    <div class="card">
+      <h3>Make termination mutual</h3>
+      <div class="fix">In <span class="clause">§9.2</span>, replace "Client may" with
+      <b>"Either Party may"</b>, or add a matching right for the contractor to terminate on
+      the same 30 days' notice, with payment for work done up to that date.</div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Numbering check</h2>
+    <table class="check">
+      <tr><th>Reference in text</th><th>What it should point to</th><th>Status</th></tr>
+      <tr><td class="clause">Exhibit B</td><td>mentioned in §3.2</td>
+          <td class="status-bad">✗ not in the package</td></tr>
+      <tr><td class="clause">Exhibit A</td><td>rate sheet</td>
+          <td class="status-ok">✓ present, matches</td></tr>
+      <tr><td class="clause">§9.2 → §5.3</td><td>cross-reference to the penalty</td>
+          <td class="status-ok">✓ section exists, number correct</td></tr>
+    </table>
+  </section>
+
+  <footer>
+    <div class="bounds">
+      <div>🚫 I don't decide for you whether to sign</div>
+      <div>🚫 I don't guarantee the outcome of a dispute or case</div>
+      <div>🚫 I don't replace a New York lawyer</div>
+    </div>
+    <p>Prepared by the "AI Paralegal NY" skill (Claude). This is a working summary to
+    prepare for a consultation, not a legal opinion.</p>
+  </footer>
+
+</div>
+<button class="print-btn" onclick="window.print()">🖨 Print / PDF</button>
+</body>
+</html>
