@@ -5,6 +5,7 @@ Custom skills and automations for Claude Code that I built and use in my own wor
 | Skill | What it does |
 |---|---|
 | **Legal Assistant** | Reads a contract with New York State and New York City rules in mind. Flags risky clauses, checks section and exhibit references, suggests better wording and produces a plain-English HTML report with color-coded risk levels. Handles one document or a batch in a single report. |
+| **Legal Assistant for a Bank General Counsel** | A version for a community bank's legal office. Reviews vendor contracts, NDAs, leases and employment documents from the bank's side, with checks for regulator access, incident-notice deadlines, data use, mergers and insider transactions. Runs from one instruction file inside the bank's approved AI tools. |
 | **AI Text Critic** | Checks whether an English text reads as AI-written and rewrites it in plain American business English. Built for resumes, cover letters and LinkedIn posts. Includes a Python script that scores the text. |
 | **Telegram Notifier** | Sets up a personal Telegram bot so scripts, scheduled tasks and Claude itself can send short status messages to my phone. No server, one API call. |
 | **Scheduled automations** | Tasks Claude runs on its own on a schedule: a weekday morning brief and a daily capture of public data from a website. |
@@ -18,6 +19,12 @@ A review of a fictional freelance services agreement. Three risks, one broken ex
 [Open the full report](https://mariamatveeva2020.github.io/claude-skills/examples/contract-review-sample.html)
 
 [![Contract review sample](examples/contract-review-sample.png)](https://mariamatveeva2020.github.io/claude-skills/examples/contract-review-sample.html)
+
+### Legal Assistant for a Bank General Counsel
+
+A review of a fictional SaaS agreement for a fictional community bank: five risks, two drafting errors, proposed wording and questions for the GC.
+
+[See the sample review](examples/bank-gc-legal-assistant.md)
 
 ### AI Text Critic
 
@@ -37,9 +44,9 @@ What runs, when, and what lands on my phone.
 
 [See the automations](examples/scheduled-automations.md)
 
-## Note on the legal skill
+## Note on the legal skills
 
-The Legal Assistant prepares facts for a conversation with a lawyer. It does not give legal advice, does not say whether to sign, and does not replace a licensed attorney.
+Both legal assistants prepare facts for a conversation with a lawyer. They do not give legal advice, do not say whether to sign, and do not replace a licensed attorney.
 
 ## Want to see one in action?
 
